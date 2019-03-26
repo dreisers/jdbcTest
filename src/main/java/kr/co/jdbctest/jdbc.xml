@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- jdbc.xml -->
+	<!-- DBOpen클래스와 동일한 기능 -->
+
+	<!-- 1) DB연결하기 위한 정보를 스프링빈으로 등록 -->
+	<!-- bean의 id 첫 글자는 소문자로 할 것! -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+		<property name="username" value="java1113"></property>
+		<property name="password" value="1234"></property>
+	</bean>
+	<!-- 2) 1)의 dataSource 스프링빈을 주입받아서 JdbcTemplate 완성 -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<!-- 3) DAO를 스프링빈으로 등록하고, jdbcTemplate빈을 주입 -->
+	<bean id="boardDAO" class="kr.co.jdbctest.BoardDAO">
+		<property name="jt" ref="jdbcTemplate"></property>
+	</bean>
+</beans>
